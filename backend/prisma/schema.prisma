@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model bloodtypes {
+  bloodtypeId Int          @id @default(autoincrement())
+  bloodname   String?
+  bloodstock  bloodstock[]
+  booking     booking[]
+  donors      donors[]
+}
+
+model donors {
+  donorId     Int            @id @default(autoincrement())
+  firstname   String
+  secondname  String
+  lastname    String?
+  city        String?
+  weight      Float?
+  pressure    Float?
+  gender      donors_gender?
+  contact     String
+  createdAt   DateTime?      @default(now())
+  updatedAt   DateTime?      @default(now())
+  bloodtypeId Int?
+  bloodtypes  bloodtypes?    @relation(fields: [bloodtypeId], references: [bloodtypeId])
+  donations   donations[]
+
+  @@index([bloodtypeId], name: "bloodtypesIndex")
+}
+
+model users {
+  userId   Int      @id @default(autoincrement())
+  username String?
+  email    String   @unique
+  isAdmin  Boolean? @default(false)
+  password String
+}
+
+model bloodstock {
+  stockId     Int         @id @default(autoincrement())
+  amount      Int?
+  createdAt   DateTime?   @default(now())
+  bloodtypeId Int?
+  bloodtypes  bloodtypes? @relation(fields: [bloodtypeId], references: [bloodtypeId])
+  donations   donations[]
+  patients    patients[]
+
+  @@index([bloodtypeId], name: "bloodtypesIndex")
+}
+
+model booking {
+  bookingId   Int             @id @default(autoincrement())
+  firstname   String
+  secondname  String
+  lastname    String?
+  city        String?
+  gender      booking_gender?
+  contact     String
+  appointment DateTime?
+  bloodtypeId Int?
+  bloodtypes  bloodtypes?     @relation(fields: [bloodtypeId], references: [bloodtypeId])
+
+  @@index([bloodtypeId], name: "bloodtypesIndex")
+}
+
+model patients {
+  patientId   Int         @id @default(autoincrement())
+  patientname String
+  amount      Int?
+  stockId     Int?
+  bloodstock  bloodstock? @relation(fields: [stockId], references: [stockId])
+
+  @@index([stockId], name: "bloodstockIndex")
+}
+
+model donations {
+  donationId Int         @id @default(autoincrement())
+  donorId    Int?
+  amount     Int?
+  createdAt  DateTime?   @default(now())
+  updatedAt  DateTime?   @default(now())
+  stockId    Int?
+  donors     donors?     @relation(fields: [donorId], references: [donorId])
+  bloodstock bloodstock? @relation(fields: [stockId], references: [stockId])
+
+  @@index([stockId], name: "bloodstockIndex")
+  @@index([donorId], name: "donorIndex")
+}
+
+enum donors_gender {
+  male
+  female
+}
+
+enum booking_gender {
+  male
+  female
+}
