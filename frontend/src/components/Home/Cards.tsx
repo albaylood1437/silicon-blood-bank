@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
   donorItems: number;
-  requestItems: number;
+  donationItems: number;
   bloodtypeItems: number;
 }
 
@@ -147,7 +147,7 @@ export default function Cards(props: Props) {
                   <Grid container alignItems="center">
                     <Grid item xs>
                       <Typography gutterBottom variant="h5">
-                        {props.requestItems}
+                        {props.donationItems}
                       </Typography>
                     </Grid>
                     <Grid item>

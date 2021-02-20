@@ -33,32 +33,32 @@ interface Props {
 	onSubmit: (data: any) => void;
 	name: string;
 	donors: any;
-	request?: any;
-	bloodtypes: any;
+	donation?: any;
+	bloodstock: any;
 	onClick?: () => void;
 }
 
-const RequestForm: React.FC<Props> = ({
+const DonationForm: React.FC<Props> = ({
 	onSubmit,
-	bloodtypes,
+	bloodstock,
 	name,
-	request,
+	donation,
 	donors,
 	onClick,
 }) => {
 	const InputField = ({ field, form, ...props }: any) => {
 		return <TextField {...props} {...field} />;
 	};
-	const BloodTypeField = ({ field, form, ...props }: any) => {
+	const BloodStockField = ({ field, form, ...props }: any) => {
 		return (
 			<FormControl variant="outlined" className={classes.formControl}>
 				<InputLabel id="demo-simple-select-outlined-label">
-					bloodtypeId
+					stockId
 				</InputLabel>
 				<Select {...props} {...field}>
-					{bloodtypes.map((bloodtype: any) => (
-						<MenuItem key={bloodtype.bloodtypeId} value={bloodtype.bloodtypeId}>
-							{bloodtype.bloodname}
+					{bloodstock.map((stock: any) => (
+						<MenuItem key={stock.stockId} value={stock.stockId}>
+							{stock.bloodtypes.bloodname}
 						</MenuItem>
 					))}
 				</Select>
@@ -87,21 +87,21 @@ const RequestForm: React.FC<Props> = ({
 	};
 
 	const validationSchema: any = Yup.object({
-		bloodtypeId: Yup.number().required("bloodtypeId is required"),
+		stockId: Yup.number().required("stockId is required"),
 		donorId: Yup.number().required("donorId is required"),
 		amount: Yup.number().required("amount is required")
 	});
 
 	const addValues = {
-		bloodtypeId: undefined,
+		stockId: undefined,
 		donorId: undefined,
 		amount: undefined,
 	};
 
-	const editValues = request && {
-		bloodtypeId: request.bloodtypeId,
-		donorId: request.donorId,
-		amount: request.amount,
+	const editValues = donation && {
+		stockId: donation.stockId,
+		donorId: donation.donorId,
+		amount: donation.amount,
 	};
 	const values = name === "edit" ? editValues : addValues;
 	const classes = useStyles();
@@ -110,8 +110,8 @@ const RequestForm: React.FC<Props> = ({
 			onSubmit={(data, { resetForm }) => {
 				onSubmit({
 					row: data,
-					id: request.requestId,
-					requestData: request,
+					id: donation.donationId,
+					donationData: donation,
 				});
 				if (name !== "edit") resetForm();
 			}}
@@ -129,11 +129,11 @@ const RequestForm: React.FC<Props> = ({
 								}}
 							>
 								<Field
-									labelId="Blood Type"
-									name="bloodtypeId"
-									id="bloodtypeId"
-									label="Blood Type"
-									component={BloodTypeField}
+									labelId="Stock Type"
+									name="stockId"
+									id="stockId"
+									label="Stock Type"
+									component={BloodStockField}
 								/>
 							</div>
 							<div
@@ -192,4 +192,4 @@ const RequestForm: React.FC<Props> = ({
 	);
 };
 
-export default RequestForm;
+export default DonationForm;

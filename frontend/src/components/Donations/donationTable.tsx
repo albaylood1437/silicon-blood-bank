@@ -12,18 +12,18 @@ import TableRow from "@material-ui/core/TableRow";
 import Pagination from "@material-ui/lab/Pagination";
 import React, { Fragment, useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import RequestForm from "../Forms/requestForm";
+import DonationForm from "../Forms/donationForm";
 import Progress from "../Loading/progress";
 import {
-  deleteRequest,
-  getRequests,
-  postRequests,
-  updateRequest,
-} from "../../services/requestServices";
-import { getBloodTypes } from "../../services/bloodtypeServices";
+  deleteDonation,
+  getDonations,
+  postDonations,
+  updateDonation,
+} from "../../services/donationServices";
+import { getBloodstock } from "../../services/bloodstockServices";
 import { getDonors } from "../../services/donorServices";
 import SnackPar from "../Common/snackpar";
-import RequestPopForm from "../Forms/PopUpForms/requestPop";
+import DonationPopForm from "../Forms/PopUpForms/donationPop";
 import FilterSize from "../Common/filter";
 import Search from "../Search/search";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
@@ -73,15 +73,15 @@ const useStyles = makeStyles((theme) => ({
 const isSearched = (value: string) => ({ donors }: any) =>
   donors.contact.toLowerCase().includes(value.toLowerCase());
 
-export default function RequestTable() {
+export default function DonationTable() {
   const classes = useStyles();
-  const [requests, setRequests] = useState<Array<{}>>([]);
+  const [donations, setDonations] = useState<Array<{}>>([]);
   const [donors, setDonors] = useState<Array<{}>>([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState(null);
   const [value, setValue] = useState<string>("");
-  const [bloodtypes, setBloodTypes] = useState<Array<{}>>([]);
+  const [bloodstock, setBloodStock] = useState<Array<{}>>([]);
   const [isLoading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
@@ -91,15 +91,15 @@ export default function RequestTable() {
   const [bloodtypeItems, setBloodTypeItems] = useState(0);
   const { admin }: any = auth.getCurrentUser();
   useEffect(() => {
-    const fetchrequests = async (page: number, size: number) => {
-      const { data } = await getRequests(page, size);
+    const fetchdonations = async (page: number, size: number) => {
+      const { data } = await getDonations(page, size);
       setTotalPages(data.totalPages);
       setTotalItems(data.totalItems);
-      setRequests(data.requests);
+      setDonations(data.donations);
       setLoading(false);
     };
 
-    fetchrequests(page - 1, size);
+    fetchdonations(page - 1, size);
   }, [page, size]);
 
   useEffect(() => {
@@ -113,12 +113,12 @@ export default function RequestTable() {
   }, [page, donorItems]);
 
   useEffect(() => {
-    const fetchBloodTypes = async (page: number, size: number) => {
-      const { data } = await getBloodTypes((page = 0), size);
+    const fetchBloodStock = async (page: number, size: number) => {
+      const { data } = await getBloodstock((page = 0), size);
       setBloodTypeItems(data.totalItems);
-      setBloodTypes(data.bloodtypes);
+      setBloodStock(data.bloodstock);
     };
-    fetchBloodTypes(page - 1, bloodtypeItems);
+    fetchBloodStock(page - 1, bloodtypeItems);
   }, [page, bloodtypeItems]);
 
   const fetchPaginatedData = (e: any, page: number) => {
@@ -132,9 +132,9 @@ export default function RequestTable() {
   const handleSubmit = async ({ row }: any) => {
     console.log(row);
     try {
-      const { data } = await postRequests(row);
-      const newrequests = [...requests, data];
-      setRequests(newrequests);
+      const { data } = await postDonations(row);
+      const newdonations = [...donations, data];
+      setDonations(newdonations);
       handleClick("Sucessfully posted!");
     } catch (err) {
       handleClick("Sucessfully posted!");
@@ -143,28 +143,28 @@ export default function RequestTable() {
   };
   const handleDelete = async (id: number) => {
     try {
-      const clonerequests = [...requests];
-      const newrequests = clonerequests.filter(
-        (request: any) => request.requestId !== id
+      const clonedonations = [...donations];
+      const newdonations = clonedonations.filter(
+        (donation: any) => donation.donationId !== id
       );
-      setRequests(newrequests);
-      await deleteRequest(id);
+      setDonations(newdonations);
+      await deleteDonation(id);
       handleClick("Sucessfully deleted!");
     } catch (err) {
       handleClick("Sucessfully deleted!");
       setErrors(err.message);
-      const clonerequests = [...requests];
-      setRequests(clonerequests);
+      const clonedonations = [...donations];
+      setDonations(clonedonations);
     }
   };
 
-  const handleUpdate = async ({ row, id, requestData }: any) => {
+  const handleUpdate = async ({ row, id, donationData }: any) => {
     try {
-      const { data } = await updateRequest({ row, id });
-      const clonerequests = [...requests];
-      const index = clonerequests.indexOf(requestData);
-      clonerequests[index] = { ...data };
-      setRequests(clonerequests);
+      const { data } = await updateDonation({ row, id });
+      const clonedonations = [...donations];
+      const index = clonedonations.indexOf(donationData);
+      clonedonations[index] = { ...data };
+      setDonations(clonedonations);
       handleClick("Sucessfully updated!");
     } catch (err) {
       handleClick("Sucessfully updated!");
@@ -232,41 +232,41 @@ export default function RequestTable() {
                       <TableCell align="center">Actions</TableCell>
                     </TableRow>
                   </TableHead>
-                  {requests && (
+                  {donations && (
                     <TableBody>
-                      {requests
+                      {donations
                         .filter(isSearched(value))
-                        .map((request: any) => (
-                          <TableRow key={request.requestId}>
+                        .map((donation: any) => (
+                          <TableRow key={donation.donationId}>
                             <TableCell>
-                              {request.donors.firstname}{" "}
-                              {request.donors.secondname}{" "}
-                              {request.donors.lastname}
+                              {donation.donors.firstname}{" "}
+                              {donation.donors.secondname}{" "}
+                              {donation.donors.lastname}
                             </TableCell>
                             <TableCell>
-                              {request.bloodtypes.bloodname}
+                              {donation.bloodstock.bloodname}
                             </TableCell>
                             <TableCell>
-                              {request.donors.contact}
+                              {donation.donors.contact}
                             </TableCell>
                             <TableCell>
-                              {moment(request.donors.createdAt).format(
+                              {moment(donation.donors.createdAt).format(
                                 "DD/MM/YYYY"
                               )}
                             </TableCell>
-                            <TableCell>{`${request.amount} unit`}</TableCell>
+                            <TableCell>{`${donation.amount} unit`}</TableCell>
 
                             {admin && (
                               <TableCell style={{ display: "flex" }}>
-                                <RequestPopForm
+                                <DonationPopForm
                                   onSubmit={handleUpdate}
-                                  request={request}
+                                  donation={donation}
                                   donors={donors}
-                                  bloodtypes={bloodtypes}
+                                  bloodstock={bloodstock}
                                 />
 
                                 <DeletePopUp
-                                  item={request.requestId}
+                                  item={donation.donationId}
                                   onDelete={handleDelete}
                                 />
                               </TableCell>
@@ -290,13 +290,13 @@ export default function RequestTable() {
           </Grid>
           <Grid item xs={5}>
             <Paper elevation={0} variant="outlined" className={classes.paper}>
-              <h3>request Form</h3>
-              <RequestForm
+              <h3>donation Form</h3>
+              <DonationForm
                 onSubmit={handleSubmit}
                 name="add"
-                request="request"
+                donation="donation"
                 donors={donors}
-                bloodtypes={bloodtypes}
+                bloodstock={bloodstock}
               />
             </Paper>
           </Grid>

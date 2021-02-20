@@ -8,10 +8,10 @@ import AppBar from "../AppBar";
 import Home from "../Home/index";
 import { Drawer } from "../SideBar";
 import Profile from "../Common/Profile";
-import Grades from "../Requests";
+import Grades from "../Donations";
 import NotFound from "../Common/NotFound";
 import Donors from "../Donors";
-import Requests from "../Requests";
+import Donation from "../Donations";
 import BloodTypes from "../BloodTypes";
 import AlldonorView from "../Reports/alldonorsview";
 import DonorVIew from "../Reports/donorReportView";
@@ -64,7 +64,7 @@ const Dashboard = () => {
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
             <ProtectedRoute path="/dashboard/donors" component={Donors} />
-            <ProtectedRoute path="/dashboard/requests" component={Requests} />
+            <ProtectedRoute path="/dashboard/donations" component={Donation} />
             <ProtectedRoute path="/dashboard/bloodtypes" component={BloodTypes} />
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
             <Route path="/dashboard/not-found" component={NotFound} />

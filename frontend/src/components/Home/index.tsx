@@ -6,7 +6,7 @@ import { LevelGraph } from "../Graphs";
 import Typography from "@material-ui/core/Typography";
 import Cards from "./Cards";
 import Progress from "../Loading/progress";
-import { getRequests } from "../../services/requestServices";
+import { getDonations } from "../../services/donationServices";
 import { getBloodTypes } from "../../services/bloodtypeServices";
 import { getDonors } from "../../services/donorServices";
 
@@ -25,15 +25,15 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const [donorItems, setDonorItems] = useState(0);
-  const [requestItems, setRequests] = useState(0);
+  const [donationItems, setDonations] = useState(0);
   const [bloodtypeItems, setBloodTypesItems] = useState(0);
   const [donors, setDonors] = useState<Array<{}>>([]);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     const fetchRequests = async () => {
-      const { data } = await getRequests();
+      const { data } = await getDonations();
       const { totalItems } = data;
-      setRequests(totalItems);
+      setDonations(totalItems);
       setLoading(false);
     };
     const fetchDonors = async (page: number, size: number) => {
@@ -60,7 +60,7 @@ const Home = () => {
       ) : (
         <div className={classes.root}>
           <Cards
-            requestItems={requestItems}
+            donationItems={donationItems}
             donorItems={donorItems}
             bloodtypeItems={bloodtypeItems}
           />
