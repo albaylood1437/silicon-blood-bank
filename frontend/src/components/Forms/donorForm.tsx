@@ -66,7 +66,6 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
     bloodtypeId: Yup.number().required("bloodtype name is required"),
     gender: Yup.string().required("Gender is required"),
     weight: Yup.number().required().min(60),
-    aids: Yup.string().required(),
     pressure: Yup.number().required().max(180)
   });
   const InputField = ({ field, form, ...props }: any) => {
@@ -107,31 +106,13 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
       </FormControl>
     );
   };
-  const AidsSelect = ({ field, form, ...props }: any) => {
-    return (
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Aids</FormLabel>
-        <RadioGroup {...props} {...field}>
-          {["negative", "positive"].map((option) => (
-            <div>
-              <FormControlLabel
-                value={option}
-                control={<Radio />}
-                label={option}
-              />
-            </div>
-          ))}
-        </RadioGroup>
-      </FormControl>
-    );
-  };
+
   const addValues = {
     firstname: "",
     secondname: "",
     lastname: "",
     weight: undefined,
     pressure: undefined,
-    aids: "",
     city: "",
     contact: undefined,
     gender: "",
@@ -144,7 +125,6 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
     lastname: row.lastname,
     weight: row.weight,
     pressure: row.pressure,
-    aids: row.aids,
     city: row.city,
     contact: row.contact,
     gender: row.gender,
@@ -264,17 +244,6 @@ const DonorForm: React.FC<Props> = ({ bloodtypes, onSubmit, row, name }) => {
                     id="gender"
                     label="Gender"
                     component={genderSelect}
-                  />
-                  <Field
-                    labelId="aids"
-                    name="aids"
-                    id="aids"
-                    label="Aids"
-                    helperText={
-                      errors.aids && touched.aids ? errors.aids : null
-                    }
-                    error={touched.aids && Boolean(errors.aids)}
-                    component={AidsSelect}
                   />
                   <Field
                     labelId="bloodtypeId"

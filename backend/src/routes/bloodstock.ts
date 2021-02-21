@@ -77,6 +77,7 @@ bloodstock.post("/", auth, async (req, res) => {
           },
         },
       },
+      include: { bloodtypes: true },
     });
     res.send(stock);
   } catch (err) {
@@ -110,6 +111,7 @@ bloodstock.put("/:id", auth, async (req: Request, res: Response) => {
           },
         },
       },
+      include: { bloodtypes: true },
     });
     res.send(stock);
   } catch (err) {

@@ -12,21 +12,17 @@ import TableRow from "@material-ui/core/TableRow";
 import Pagination from "@material-ui/lab/Pagination";
 import React, { Fragment, useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
-import DonationForm from "../Forms/donationForm";
+import PatientForm from "../Forms/patientForm";
 import Progress from "../Loading/progress";
 import {
-  deleteDonation,
-  getDonations,
-  postDonations,
-  updateDonation,
-} from "../../services/donationServices";
-import {
-  getBloodstock,
-  updateBloodstock,
-} from "../../services/bloodstockServices";
-import { getDonors } from "../../services/donorServices";
+  deletePatient,
+  getPatients,
+  postPatients,
+  updatePatient,
+} from "../../services/patientServices";
+import { getBloodstock } from "../../services/bloodstockServices";
 import SnackPar from "../Common/snackpar";
-import DonationPopForm from "../Forms/PopUpForms/donationPop";
+import PatientPopForm from "../Forms/PopUpForms/patientPop";
 import FilterSize from "../Common/filter";
 import Search from "../Search/search";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
@@ -73,13 +69,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const isSearched = (value: string) => ({ donors }: any) =>
-  donors.contact.toLowerCase().includes(value.toLowerCase());
+const isSearched = (value: string) => ({ patientname }: any) =>
+  patientname.toLowerCase().includes(value.toLowerCase());
 
-export default function DonationTable() {
+export default function PatientTable() {
   const classes = useStyles();
-  const [donations, setDonations] = useState<Array<{}>>([]);
-  const [donors, setDonors] = useState<Array<{}>>([]);
+  const [patients, setPatients] = useState<Array<{}>>([]);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState(null);
@@ -90,30 +85,19 @@ export default function DonationTable() {
   const [page, setPage] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [size, setSize] = useState(5);
-  const [donorItems, setDonorItems] = useState(0);
   const [bloodtypeItems, setBloodTypeItems] = useState(0);
   const { admin }: any = auth.getCurrentUser();
   useEffect(() => {
-    const fetchdonations = async (page: number, size: number) => {
-      const { data } = await getDonations(page, size);
+    const fetchpatients = async (page: number, size: number) => {
+      const { data } = await getPatients(page, size);
       setTotalPages(data.totalPages);
       setTotalItems(data.totalItems);
-      setDonations(data.donations);
+      setPatients(data.patients);
       setLoading(false);
     };
 
-    fetchdonations(page - 1, size);
+    fetchpatients(page - 1, size);
   }, [page, size]);
-
-  useEffect(() => {
-    const fetchDonors = async (page: number, size: number) => {
-      const { data } = await getDonors((page = 0), size);
-      setDonorItems(data.totalItems);
-      setDonors(data.donors);
-    };
-
-    fetchDonors(page - 1, donorItems);
-  }, [page, donorItems]);
 
   useEffect(() => {
     const fetchBloodStock = async (page: number, size: number) => {
@@ -135,10 +119,10 @@ export default function DonationTable() {
   const handleSubmit = async ({ row }: any) => {
     console.log(row);
     try {
-      const { data } = await postDonations(row);
+      const { data } = await postPatients(row);
       await getBloodstock(row.stockId);
-      const newdonations = [...donations, data];
-      setDonations(newdonations);
+      const newpatients = [...patients, data];
+      setPatients(newpatients);
       handleClick("Sucessfully posted!");
     } catch (err) {
       handleClick("Sucessfully posted!");
@@ -147,28 +131,28 @@ export default function DonationTable() {
   };
   const handleDelete = async (id: number) => {
     try {
-      const clonedonations = [...donations];
-      const newdonations = clonedonations.filter(
-        (donation: any) => donation.donationId !== id
+      const clonepatients = [...patients];
+      const newpatients = clonepatients.filter(
+        (patient: any) => patient.patientId !== id
       );
-      setDonations(newdonations);
-      await deleteDonation(id);
+      setPatients(newpatients);
+      await deletePatient(id);
       handleClick("Sucessfully deleted!");
     } catch (err) {
       handleClick("Sucessfully deleted!");
       setErrors(err.message);
-      const clonedonations = [...donations];
-      setDonations(clonedonations);
+      const clonepatients = [...patients];
+      setPatients(clonepatients);
     }
   };
 
-  const handleUpdate = async ({ row, id, donationData }: any) => {
+  const handleUpdate = async ({ row, id, patientData }: any) => {
     try {
-      const { data } = await updateDonation({ row, id });
-      const clonedonations = [...donations];
-      const index = clonedonations.indexOf(donationData);
-      clonedonations[index] = { ...data };
-      setDonations(clonedonations);
+      const { data } = await updatePatient({ row, id });
+      const clonepatients = [...patients];
+      const index = clonepatients.indexOf(patientData);
+      clonepatients[index] = { ...data };
+      setPatients(clonepatients);
       handleClick("Sucessfully updated!");
     } catch (err) {
       handleClick("Sucessfully updated!");
@@ -227,47 +211,34 @@ export default function DonationTable() {
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead className={classes.head}>
                     <TableRow>
-                      <TableCell>Donor Name</TableCell>
-                      <TableCell>Blood Name</TableCell>
-                      <TableCell>Phone Number</TableCell>
-                      <TableCell>Donation Date</TableCell>
-                      <TableCell>Amount</TableCell>
+                      <TableCell>Patient Id</TableCell>
 
+                      <TableCell>Patient Name</TableCell>
+                      <TableCell>Amount</TableCell>
                       <TableCell align="center">Actions</TableCell>
                     </TableRow>
                   </TableHead>
-                  {donations && (
+                  {patients && (
                     <TableBody>
-                      {donations
+                      {patients
                         .filter(isSearched(value))
-                        .map((donation: any) => (
-                          <TableRow key={donation.donationId}>
-                            <TableCell>
-                              {donation.donors.firstname}{" "}
-                              {donation.donors.secondname}{" "}
-                              {donation.donors.lastname}
-                            </TableCell>
-                            <TableCell>
-                              {donation.donors.bloodtypes.bloodname}
-                            </TableCell>
-                            <TableCell>{donation.donors.contact}</TableCell>
-                            <TableCell>
-                              {moment(donation.donors.createdAt).format(
-                                "DD/MM/YYYY"
-                              )}
-                            </TableCell>
-                            <TableCell>{`${donation.amount} unit`}</TableCell>
+                        .map((patient: any) => (
+                          <TableRow key={patient.patientId}>
+                            <TableCell>{patient.patientId} </TableCell>
+
+                            <TableCell>{patient.patientname} </TableCell>
+                            <TableCell>{`${patient.amount} unit`}</TableCell>
 
                             {admin && (
                               <TableCell style={{ display: "flex" }}>
-                                <DonationPopForm
+                                <PatientPopForm
                                   onSubmit={handleUpdate}
-                                  donation={donation}
+                                  patient={patient}
                                   bloodstock={bloodstock}
                                 />
 
                                 <DeletePopUp
-                                  item={donation.donationId}
+                                  item={patient.patientId}
                                   onDelete={handleDelete}
                                 />
                               </TableCell>
@@ -291,11 +262,11 @@ export default function DonationTable() {
           </Grid>
           <Grid item xs={5}>
             <Paper elevation={0} variant="outlined" className={classes.paper}>
-              <h3>Donation Form</h3>
-              <DonationForm
+              <h3>patient Form</h3>
+              <PatientForm
                 onSubmit={handleSubmit}
                 name="add"
-                donation="donation"
+                patient="patient"
                 bloodstock={bloodstock}
               />
             </Paper>

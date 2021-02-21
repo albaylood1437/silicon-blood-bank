@@ -10,7 +10,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import { getDonors } from "../../services/donorServices";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,30 +32,20 @@ const useStyles = makeStyles((theme) => ({
 interface Props {
   onSubmit: (data: any) => void;
   name: string;
-  donation?: any;
+  patient?: any;
   bloodstock: any;
   onClick?: () => void;
 }
 
-const DonationForm: React.FC<Props> = ({
+const PatientForm: React.FC<Props> = ({
   onSubmit,
   bloodstock,
   name,
-  donation,
+  patient,
   onClick,
 }) => {
-  const [donors, setDonors] = React.useState<Array<{}>>([]);
-
   const InputField = ({ field, form, ...props }: any) => {
     return <TextField {...props} {...field} />;
-  };
-
-  const fetchDonors = async (bloodtype: any) => {
-    const { data } = await getDonors();
-    const donors = data.donors.filter(
-      ({ bloodtypes }: any) => bloodtypes.bloodname === bloodtype
-    );
-    setDonors(donors);
   };
 
   const BloodStockField = ({ field, form, ...props }: any) => {
@@ -65,26 +54,8 @@ const DonationForm: React.FC<Props> = ({
         <InputLabel id="demo-simple-select-outlined-label">StockId</InputLabel>
         <Select {...props} {...field}>
           {bloodstock.map((stock: any) => (
-            <MenuItem
-              key={stock.stockId}
-              onClick={() => fetchDonors(stock.bloodtypes.bloodname)}
-              value={stock.stockId}
-            >
+            <MenuItem key={stock.stockId} value={stock.stockId}>
               {stock.bloodtypes.bloodname}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    );
-  };
-  const DonorField = ({ field, form, ...props }: any) => {
-    return (
-      <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">DonorId</InputLabel>
-        <Select {...props} {...field}>
-          {donors.map((donor: any) => (
-            <MenuItem key={donor.donorId} value={donor.donorId}>
-              {donor.firstname} {donor.secondname} {donor.lastname}
             </MenuItem>
           ))}
         </Select>
@@ -94,20 +65,20 @@ const DonationForm: React.FC<Props> = ({
 
   const validationSchema: any = Yup.object({
     stockId: Yup.number().required("stockId is required"),
-    donorId: Yup.number().required("donorId is required"),
+    patientname: Yup.string().required("Patient Name"),
     amount: Yup.number().required("amount is required"),
   });
 
   const addValues = {
     stockId: undefined,
-    donorId: undefined,
+    patientname: "",
     amount: undefined,
   };
 
-  const editValues = donation && {
-    stockId: donation.stockId,
-    donorId: donation.donorId,
-    amount: donation.amount,
+  const editValues = patient && {
+    stockId: patient.stockId,
+    patientname: patient.patientname,
+    amount: patient.amount,
   };
   const values = name === "edit" ? editValues : addValues;
   const classes = useStyles();
@@ -116,8 +87,8 @@ const DonationForm: React.FC<Props> = ({
       onSubmit={(data, { resetForm }) => {
         onSubmit({
           row: data,
-          id: donation.donationId,
-          donationData: donation,
+          id: patient.patientId,
+          patientData: patient,
         });
         if (name !== "edit") resetForm();
       }}
@@ -135,11 +106,16 @@ const DonationForm: React.FC<Props> = ({
                 }}
               >
                 <Field
-                  labelId="Stock Type"
-                  name="stockId"
-                  id="stockId"
-                  label="Stock Type"
-                  component={BloodStockField}
+                  variant="outlined"
+                  name="patientname"
+                  label="Patient Name"
+                  helperText={
+                    errors.patientname && touched.patientname
+                      ? errors.patientname
+                      : null
+                  }
+                  error={touched.patientname && Boolean(errors.patientname)}
+                  component={InputField}
                 />
               </div>
               <div
@@ -149,13 +125,14 @@ const DonationForm: React.FC<Props> = ({
                 }}
               >
                 <Field
-                  labelId="donorId"
-                  name="donorId"
-                  id="donorId"
-                  label="Donor ID"
-                  component={DonorField}
+                  labelId="Stock Type"
+                  name="stockId"
+                  id="stockId"
+                  label="Stock Type"
+                  component={BloodStockField}
                 />
               </div>
+
               <div
                 style={{
                   paddingBottom: "20px",
@@ -194,4 +171,4 @@ const DonationForm: React.FC<Props> = ({
   );
 };
 
-export default DonationForm;
+export default PatientForm;

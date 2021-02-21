@@ -1,24 +1,32 @@
-import withRoot from './withRoot';
-// --- Post bootstrap -----
-import React from 'react';
-// import ProductCategories from './modules/views/ProductCategories';
-import AppFooter from './AppFooter';
-import ProductHero from './ProductHero';
-// import ProductValues from './modules/views/ProductValues';
-import AppAppBar from './TopBar/AppAppBar';
-import ProductHowItWorks from './HowItWorks/index';
+import React, { Component, Fragment } from "react";
+import Navbar from "./Navbar/Navbar";
 
-function Index() {
-  return (
-    <React.Fragment>
-      <AppAppBar />
-      <ProductHero />
-      {/* <ProductValues />
-      <ProductCategories /> */}
-            <ProductHowItWorks />
-      <AppFooter />
-    </React.Fragment>
-  );
+import GlobalStyle from "../../styles/Global";
+import Slider from "./slider";
+import Footer from "./footer";
+
+class Header extends Component {
+  state = {
+    navbarOpen: false,
+  };
+
+  handleNavbar = () => {
+    this.setState({ navbarOpen: !this.state.navbarOpen });
+  };
+
+  render() {
+    return (
+      <Fragment>
+        <Navbar
+          navbarState={this.state.navbarOpen}
+          handleNavbar={this.handleNavbar}
+        />
+        <Slider />
+        <Footer />
+        <GlobalStyle />
+      </Fragment>
+    );
+  }
 }
 
-export default withRoot(Index);
+export default Header;

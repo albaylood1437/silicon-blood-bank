@@ -2,6 +2,8 @@ import { Router, Request } from "express";
 import { PrismaClient } from "@prisma/client";
 import Joi from "joi";
 import { auth } from "../middleware/auth";
+import bloodstock from "./bloodstock";
+import bloodtypes from "./bloodtypes";
 
 const prisma = new PrismaClient();
 const donations: Router = Router();
@@ -32,7 +34,7 @@ donations.get("/", async (req, res) => {
     const donations = await prisma.donations.findMany({
       take: Number(limit),
       skip: Number(offset),
-      include: { donors: true, bloodstock: true },
+      include: { donors: { include: { bloodtypes: true } }, bloodstock: true },
     });
     const totalItems = await prisma.donations.count();
     const data = getPagingData(donations as any, page, limit, totalItems);
@@ -55,6 +57,7 @@ donations.get("/", async (req, res) => {
 donations.post("/", auth, async (req, res) => {
   try {
     const { donorId, stockId } = req.body;
+
     const donor = await prisma.donors.findUnique({
       where: { donorId: donorId },
     });
@@ -91,8 +94,13 @@ donations.post("/", auth, async (req, res) => {
       },
       include: {
         bloodstock: true,
-        donors: true,
+        donors: { include: { bloodtypes: true } },
       },
+    });
+
+    await prisma.bloodstock.update({
+      where: { stockId: stockId },
+      data: { amount: stock.amount + req.body.amount },
     });
 
     res.send(donation);
@@ -123,7 +131,7 @@ donations.put("/:id", auth, async (req, res) => {
           },
         },
       },
-      include: { bloodstock: true, donors: true },
+      include: { bloodstock: true, donors: { include: { bloodtypes: true } } },
     });
     res.send(donation);
   } catch (err) {

@@ -16,34 +16,44 @@ import { green } from "@material-ui/core/colors";
 import SchoolIcon from "@material-ui/icons/School";
 
 const useStyles = makeStyles((theme) => ({
-	color: {
-		color: green[500],
-	},
+  color: {
+    color: green[500],
+  },
 }));
 
 export const mainListItems = (
-	<div>
-		<ListItemLink
-			to="/dashboard"
-			primary="Dashboard"
-			icon={<DashboardIcon />}
-		/>
-		<ListItemLink
-			to="/dashboard/donors"
-			primary="Donors"
-			icon={<PeopleIcon />}
-		/>
-		<ListItemLink
-			to="/dashboard/bloodtypes"
-			primary="Blood Types"
-			icon={<SupervisedUserCircle />}
-		/>
-		<ListItemLink
-			to="/dashboard/donations"
-			primary="Donation"
-			icon={<LibraryBooks />}
-		/>
-	</div>
+  <div>
+    <ListItemLink
+      to="/dashboard"
+      primary="Dashboard"
+      icon={<DashboardIcon />}
+    />
+    <ListItemLink
+      to="/dashboard/donors"
+      primary="Donors"
+      icon={<PeopleIcon />}
+    />
+    <ListItemLink
+      to="/dashboard/bloodtypes"
+      primary="Blood Types"
+      icon={<SupervisedUserCircle />}
+    />
+    <ListItemLink
+      to="/dashboard/donations"
+      primary="Donation"
+      icon={<LibraryBooks />}
+    />
+    <ListItemLink
+      to="/dashboard/bloodstock"
+      primary="Blood Stock"
+      icon={<LibraryBooks />}
+    />
+    <ListItemLink
+      to="/dashboard/patients"
+      primary="Patients"
+      icon={<LibraryBooks />}
+    />
+  </div>
 );
 
 // export const secondaryListItems = (
@@ -59,29 +69,29 @@ export const mainListItems = (
 // );
 
 type Props = {
-	icon: JSX.Element;
-	primary: string;
-	to: string;
+  icon: JSX.Element;
+  primary: string;
+  to: string;
 };
 
 function ListItemLink(props: Props) {
-	const { icon, primary, to } = props;
-	const classes = useStyles();
+  const { icon, primary, to } = props;
+  const classes = useStyles();
 
-	const CustomLink = React.useMemo(
-		() =>
-			React.forwardRef<HTMLAnchorElement>((linkProps, ref) => (
-				<Link ref={ref} to={to} {...linkProps} />
-			)),
-		[to]
-	);
+  const CustomLink = React.useMemo(
+    () =>
+      React.forwardRef<HTMLAnchorElement>((linkProps, ref) => (
+        <Link ref={ref} to={to} {...linkProps} />
+      )),
+    [to]
+  );
 
-	return (
-		<li>
-			<ListItem button component={CustomLink}>
-				<ListItemIcon className={classes.color}>{icon}</ListItemIcon>
-				<ListItemText primary={primary} />
-			</ListItem>
-		</li>
-	);
+  return (
+    <li>
+      <ListItem button component={CustomLink}>
+        <ListItemIcon className={classes.color}>{icon}</ListItemIcon>
+        <ListItemText primary={primary} />
+      </ListItem>
+    </li>
+  );
 }

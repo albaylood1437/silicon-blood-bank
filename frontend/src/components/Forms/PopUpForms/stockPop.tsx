@@ -6,7 +6,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import DonationForm from "../donationForm";
+import StockForm from "../stockForm";
 import { IconButton } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -17,15 +17,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DonationPopForm({
-  donation,
-  onSubmit,
-  bloodstock,
-}: any) {
+export default function StockPopForm({ stock, bloodtypes, onSubmit }: any) {
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -44,13 +42,13 @@ export default function DonationPopForm({
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">Update donation</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Update stock</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <DonationForm
+            <StockForm
               onSubmit={onSubmit}
-              donation={donation}
-              bloodstock={bloodstock}
+              stock={stock}
+              bloodtypes={bloodtypes}
               name="edit"
               onClick={handleClose}
             />

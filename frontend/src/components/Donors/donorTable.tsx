@@ -85,7 +85,7 @@ export default function DonorTable() {
   const [bloodTypeItems, setBloodTypeItems] = useState(0);
   const { admin }: any = auth.getCurrentUser();
   const handleSubmit = async ({ row }: any) => {
-    console.log(row)
+    console.log(row);
     try {
       const { data } = await postDonors(row);
       const newArray = [...donors, data];
@@ -225,15 +225,15 @@ export default function DonorTable() {
             </>
           ) : (
             <Box p={1}>
-            <Tooltip title="Add">
-              <DonorForm
-                onSubmit={handleSubmit}
-                bloodtypes={bloodtypedatas}
-                name="add"
-                row="baylood"
-              />
-            </Tooltip>
-          </Box>
+              <Tooltip title="Add">
+                <DonorForm
+                  onSubmit={handleSubmit}
+                  bloodtypes={bloodtypedatas}
+                  name="add"
+                  row="baylood"
+                />
+              </Tooltip>
+            </Box>
           )}
         </Box>
       </Container>
@@ -249,10 +249,9 @@ export default function DonorTable() {
                 <TableCell align="left">Full Name</TableCell>
                 <TableCell align="left">City</TableCell>
                 <TableCell align="left">Gender</TableCell>
-                <TableCell align="left">Blood Type</TableCell>
-                <TableCell align="left">Aids</TableCell>
                 <TableCell align="left">Weight</TableCell>
                 <TableCell align="left">Pressure</TableCell>
+                <TableCell align="left">Blood Type</TableCell>
 
                 {admin && (
                   <TableCell style={{ paddingRight: 60 }} align="center">

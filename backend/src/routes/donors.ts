@@ -33,7 +33,11 @@ donors.get("/", async (req, res) => {
 
       include: {
         bloodtypes: true,
-        donations: true
+        donations: {
+          include: {
+              bloodstock: { select: { bloodtypes: true } },
+          },
+      },
       },
       orderBy: [
         {

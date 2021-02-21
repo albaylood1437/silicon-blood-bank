@@ -79,6 +79,12 @@ patients.post("/", auth, async (req, res) => {
         },
       },
     });
+
+    await prisma.bloodstock.update({
+      where: { stockId: stockId },
+      data: { amount: stock.amount as any - req.body.amount },
+    });
+
     res.send(patient);
   } catch (err) {
     res.status(500).send(`internal error`);

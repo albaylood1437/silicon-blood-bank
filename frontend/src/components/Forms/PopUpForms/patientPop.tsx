@@ -6,9 +6,9 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import DonationForm from "../donationForm";
 import { IconButton } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
+import PatientForm from "../patientForm";
 
 const useStyles = makeStyles((theme) => ({
   editButton: {
@@ -17,15 +17,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DonationPopForm({
-  donation,
-  onSubmit,
-  bloodstock,
-}: any) {
+export default function PatientPopForm({ patient, onSubmit, bloodstock }: any) {
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -44,12 +42,12 @@ export default function DonationPopForm({
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">Update donation</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Update patient</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            <DonationForm
+            <PatientForm
               onSubmit={onSubmit}
-              donation={donation}
+              patient={patient}
               bloodstock={bloodstock}
               name="edit"
               onClick={handleClose}

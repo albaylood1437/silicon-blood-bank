@@ -15,6 +15,8 @@ import Donation from "../Donations";
 import BloodTypes from "../BloodTypes";
 import AlldonorView from "../Reports/alldonorsview";
 import DonorVIew from "../Reports/donorReportView";
+import BloodStock from "../BloodStock";
+import Patients from "../Patients";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -65,13 +67,23 @@ const Dashboard = () => {
           <Switch>
             <ProtectedRoute path="/dashboard/donors" component={Donors} />
             <ProtectedRoute path="/dashboard/donations" component={Donation} />
-            <ProtectedRoute path="/dashboard/bloodtypes" component={BloodTypes} />
+            <ProtectedRoute
+              path="/dashboard/bloodtypes"
+              component={BloodTypes}
+            />
+            <ProtectedRoute
+              path="/dashboard/bloodstock"
+              component={BloodStock}
+            />
+             <ProtectedRoute
+              path="/dashboard/patients"
+              component={Patients}
+            />
+
+
             <ProtectedRoute path="/dashboard/profile" component={Profile} />
             <Route path="/dashboard/not-found" component={NotFound} />
-            <ProtectedRoute
-              path="/dashboard/donorview"
-              component={DonorVIew}
-            />
+            <ProtectedRoute path="/dashboard/donorview" component={DonorVIew} />
             <ProtectedRoute
               path="/dashboard/alldonorsview"
               component={AlldonorView}

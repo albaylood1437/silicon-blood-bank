@@ -80,7 +80,6 @@ const Row: React.FC<Props> = (props) => {
         <TableCell align="left">{`${row.firstname} ${row.secondname} ${row.lastname}`}</TableCell>
         <TableCell align="left">{row.city}</TableCell>
         <TableCell align="left">{row.gender}</TableCell>
-        <TableCell align="left">{row.aids}</TableCell>
         <TableCell align="left">{row.weight}</TableCell>
         <TableCell align="left">{row.pressure}</TableCell>
         <TableCell align="left">
@@ -122,7 +121,7 @@ const Row: React.FC<Props> = (props) => {
                 <Box display="flex" p={1}>
                   <Box p={1} flexGrow={1}>
                     <Typography variant="h6" gutterBottom component="div">
-                      Requests
+                      Donations
                     </Typography>
                   </Box>
                   <Box p={1}></Box>
@@ -131,18 +130,18 @@ const Row: React.FC<Props> = (props) => {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Request ID</TableCell>
-                    <TableCell>Blood Name</TableCell>
+                    <TableCell>Donation ID</TableCell>
+                    <TableCell>Date</TableCell>
                     <TableCell align="left">Amount</TableCell>
                   </TableRow>
                 </TableHead>
-                {row.requests && (
+                {row.donations && (
                   <TableBody>
-                    {row.requests.map((request: any) => (
-                      <TableRow key={request.requestId}>
-                        <TableCell align="left">{request.requestId}</TableCell>
-                        <TableCell>{request.bloodtypes.bloodname}</TableCell>
-                        <TableCell align="left">{request.amount}</TableCell>
+                    {row.donations.map((donation: any) => (
+                      <TableRow key={donation.donationId}>
+                        <TableCell align="left">{donation.donationId}</TableCell>
+                        <TableCell align="left">{donation.createdAt}</TableCell>
+                        <TableCell align="left">{donation.amount}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
