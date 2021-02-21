@@ -39,8 +39,8 @@ export const mainListItems = (
 			icon={<SupervisedUserCircle />}
 		/>
 		<ListItemLink
-			to="/dashboard/requests"
-			primary="Requests"
+			to="/dashboard/donations"
+			primary="Donation"
 			icon={<LibraryBooks />}
 		/>
 	</div>

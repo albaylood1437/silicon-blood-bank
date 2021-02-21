@@ -244,7 +244,7 @@ export default function DonationTable() {
                               {donation.donors.lastname}
                             </TableCell>
                             <TableCell>
-                              {donation.bloodstock.bloodname}
+                              {donation.donors.bloodtypes.bloodname}
                             </TableCell>
                             <TableCell>
                               {donation.donors.contact}
