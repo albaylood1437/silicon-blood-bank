@@ -32,10 +32,15 @@ create table donations (
    INDEX donorIndex (donorId),
     FOREIGN KEY (donorId)
         REFERENCES donors(donorId)
-        ON UPDATE CASCADE ON DELETE CASCADE
+        ON UPDATE CASCADE ON DELETE CASCADE,
+	stockId int,
+    INDEX bloodstockIndex (stockId),
+    FOREIGN KEY (stockId)
+        REFERENCES bloodstock(stockId)
+        ON UPDATE CASCADE ON DELETE set null
 );
 alter table donors
-drop column HBsAg;
+drop column donations;
 
 CREATE TABLE users (
   userId int AUTO_INCREMENT NOT NULL,
@@ -57,13 +62,25 @@ create table booking(
 	gender ENUM('male', 'female'),
 	contact varchar(20) not null,
     appointment  datetime,
-    primary key(bookingId)
+    primary key(bookingId),
+    bloodtypeId int,
+    INDEX bloodtypesIndex (bloodtypeId),
+    FOREIGN KEY (bloodtypeId)
+        REFERENCES bloodtypes(bloodtypeId)
+        ON UPDATE CASCADE ON DELETE set null
 );
-create table patient(
+
+drop table booking;
+create table patients(
 	patientId int AUTO_INCREMENT NOT NULL,
     patientname varchar(20) not null,
     amount int,
-    primary key(patientId)
+    primary key(patientId),
+    stockId int,
+    INDEX bloodstockIndex (stockId),
+    FOREIGN KEY (stockId)
+        REFERENCES bloodstock(stockId)
+        ON UPDATE CASCADE ON DELETE set null
 );
 
 drop table bloodstock;
