@@ -25,8 +25,8 @@ const Wrapper = styled.div`
 		background: #ff0000;
 		display: block;
 		position: relative;
-		width: 3.5rem;
-		height: 0.4rem;
+		width: 2.5rem;
+		height: 0.2rem;
 		margin-bottom: 0.7rem;
 		transition: all ease-in-out 0.2s;
 	}

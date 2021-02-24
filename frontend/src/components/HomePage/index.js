@@ -1,32 +1,17 @@
-import React, { Component, Fragment } from "react";
-import Navbar from "./Navbar/Navbar";
-
-import GlobalStyle from "../../styles/Global";
+import React from "react";
 import Slider from "./slider";
-import Footer from "./footer";
+import Process from "./process";
+import Layout from "./layout";
+import Campaigns from "./campaign";
 
-class Header extends Component {
-  state = {
-    navbarOpen: false,
-  };
+const Index = () => {
+  return (
+    <Layout>
+      <Slider />
+      <Process />
+      <Campaigns />
+    </Layout>
+  );
+};
 
-  handleNavbar = () => {
-    this.setState({ navbarOpen: !this.state.navbarOpen });
-  };
-
-  render() {
-    return (
-      <Fragment>
-        <Navbar
-          navbarState={this.state.navbarOpen}
-          handleNavbar={this.handleNavbar}
-        />
-        <Slider />
-        <Footer />
-        <GlobalStyle />
-      </Fragment>
-    );
-  }
-}
-
-export default Header;
+export default Index;

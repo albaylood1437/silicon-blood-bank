@@ -32,6 +32,9 @@ import Search from "../Search/search";
 import DeletePopUp from "../Forms/PopUpForms/deletePop";
 import auth from "../../services/authServices";
 import moment from "moment";
+import { IconButton, Tooltip } from "@material-ui/core";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +46,15 @@ const useStyles = makeStyles((theme) => ({
   gridRoot: {
     flexGrow: 1,
   },
-
+  greenLight: {
+    color: green[600],
+    height: "34px",
+  },
+  report: {
+    margin: theme.spacing(1),
+    color: green[600],
+    cursor: `pointer`,
+  },
   paper: {
     padding: theme.spacing(3),
     textAlign: "left",
@@ -211,8 +222,25 @@ export default function DonationTable() {
           <Box p={1} flexGrow={1}>
             <Search value={value} onChange={handleChange} by="Phone Number" />
           </Box>
-          <Box p={0}>
+          <Box p={2}>
             <FilterSize onSize={handleSize} totalItems={totalItems} />
+          </Box>
+          <Box p={3}>
+            <Tooltip title="View Report">
+              <IconButton className={classes.report} aria-label="report">
+                <Link
+                  className={classes.greenLight}
+                  to={{
+                    pathname: "/dashboard/alldonationview",
+                    state: {
+                      donations,
+                    },
+                  }}
+                >
+                  <VisibilityIcon fontSize="large" />
+                </Link>
+              </IconButton>
+            </Tooltip>
           </Box>
         </Box>
       </Container>

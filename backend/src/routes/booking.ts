@@ -30,11 +30,7 @@ booking.get("/", async (req, res) => {
     const booking = await prisma.booking.findMany({
       take: Number(limit),
       skip: Number(offset), // Skip the cursor
-      orderBy: [
-        {
-          bookingId: "asc",
-        },
-      ],
+      include: { bloodtypes: true },
     });
     const totalItems = await prisma.booking.count();
     const data = getPagingData(booking as any, page, limit, totalItems);
@@ -56,7 +52,7 @@ booking.get("/", async (req, res) => {
 //     res.send(book);
 // });
 
-booking.post("/", auth, async (req, res) => {
+booking.post("/", async (req, res) => {
   try {
     const { bloodtypeId } = req.body;
 

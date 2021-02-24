@@ -27,31 +27,21 @@ const CollapseMenu = props => {
 					</li>
 					<li>
 						<Link to="/about" onClick={props.handleNavbar}>
-							About Us
+							About
 						</Link>
 					</li>
 					<li>
-						<Link to="/programs" onClick={props.handleNavbar}>
-							Programs
-						</Link>
-					</li>
-					<li>
-						<Link to="/projects" onClick={props.handleNavbar}>
-							Projects
-						</Link>
-					</li>
-					<li>
-						<Link to="/contact" onClick={props.handleNavbar}>
-							Contact Us
+						<Link to="/signin" onClick={props.handleNavbar}>
+							Admin
 						</Link>
 					</li>
 					<li>
 						<Link
-							className="btn"
-							to="/projects/project.four/"
+							className="btn btn-top"
+							to="/booking"
 							onClick={props.handleNavbar}
 						>
-							Apply Now
+							Booking
 						</Link>
 					</li>
 				</NavLinks>
@@ -64,7 +54,7 @@ const CollapseMenu = props => {
 export default CollapseMenu;
 
 const CollapseWrapper = styled(animated.div)`
-	background: #ece913;
+	background: #fff;
 	position: fixed;
 	top: 4.5rem;
 	left: 0;

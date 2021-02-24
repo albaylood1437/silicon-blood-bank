@@ -19,6 +19,7 @@ import {
 import { getBloodTypes } from "../../services/bloodtypeServices";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useField, useFormikContext } from "formik";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  onSubmit: (data: any) => void;
+  onSubmit: (datas: any) => void;
 }
 
 const InputField = ({ field, form, ...props }: any) => {
@@ -77,16 +78,30 @@ const BookingForm: React.FC<Props> = ({ onSubmit }) => {
 
   const classes = useStyles();
   const [bloodtypes, setBloodTypes] = React.useState<Array<{}>>([]);
-  const [startDate, setStartDate] = React.useState(new Date());
 
-  const AppointmentField = () => {
-    const [startDate, setStartDate] = React.useState(new Date());
+  const DatePickerField = ({ ...props }: any) => {
+    const { setFieldValue } = useFormikContext();
+    const [field] = useField(props);
     return (
-      <DatePicker
-       
-        selected={startDate}
-        onChange={(date: Date) => setStartDate(date)}
-      />
+      <>
+        <div>Appointment</div>
+        <div
+          style={{
+            margin: "4px 0 15px 0",
+            border: "2px solid #eee",
+            display: "inline-block",
+          }}
+        >
+          <DatePicker
+            {...field}
+            {...props}
+            selected={(field.value && new Date(field.value)) || null}
+            onChange={(val) => {
+              setFieldValue(field.name, val);
+            }}
+          />
+        </div>
+      </>
     );
   };
   React.useEffect(() => {
@@ -96,6 +111,7 @@ const BookingForm: React.FC<Props> = ({ onSubmit }) => {
     };
     fetchBloodTypes();
   }, []);
+
   const BloodTypeField = ({ field, form, ...props }: any) => {
     return (
       <FormControl variant="outlined" className={classes.formControl}>
@@ -211,14 +227,11 @@ const BookingForm: React.FC<Props> = ({ onSubmit }) => {
                 label="bloodtypeId"
                 component={BloodTypeField}
               />
-              <Field
-                variant="outlined"
-                style={{ border: "10px solid #000" }}
-                labelId="appointment"
+              <DatePickerField
                 name="appointment"
+                labelId="appointment"
                 id="appointment"
-                label="appointment"
-                component={AppointmentField}
+                label="Appointment"
               />
             </div>
 

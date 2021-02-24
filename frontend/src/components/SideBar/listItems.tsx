@@ -53,6 +53,11 @@ export const mainListItems = (
       primary="Patients"
       icon={<LibraryBooks />}
     />
+    <ListItemLink
+      to="/dashboard/booking"
+      primary="Booking"
+      icon={<LibraryBooks />}
+    />
   </div>
 );
 

@@ -1,6 +1,6 @@
 import React from "react";
-import ImageOne from "../../images/bb.png";
-import ImageTwo from "../../images/aa.png";
+import ImageOne from "../../images/blood.jpg";
+import ImageTwo from "../../images/blood.jpg";
 import { Carousel } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -19,10 +19,10 @@ const SlideShow = () => {
                   className="btn btn-center mt-4"
                   to="/about"
                 >
-                  Learn More
+                  About
                 </Link>
               </div>
-              <div className="col-md-6 col-lg-6 col-sm-6 r-pic">
+              <div className="col-md-6 col-lg-6 col-sm-6 r-pic mt-5">
                 <img className="size-pic" src={ImageTwo} alt="" />
               </div>
             </div>
@@ -37,7 +37,7 @@ const SlideShow = () => {
                   className="btn btn-center mb-4"
                   to="/about"
                 >
-                  Learn More
+                  About
                 </Link>
               </div>
               <div className="col-md-6 col-lg-6 col-sm-6 r-pic">

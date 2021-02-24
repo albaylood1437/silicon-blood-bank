@@ -134,19 +134,6 @@ export function BookingTable() {
   const fetchPaginatedData = (e: any, page: number) => {
     setPage(page);
   };
-  const handleUpdate = async ({ row, id, bookData }: any) => {
-    try {
-      const { data } = await updateBooking({ row, id });
-      const clonebooking = [...booking];
-      const index = clonebooking.indexOf(bookData);
-      clonebooking[index] = { ...data };
-      setBooking(clonebooking);
-      handleClick("Sucessfully updated!");
-    } catch (err) {
-      handleClick("err!");
-      setErrors(err.message);
-    }
-  };
 
   const handleClick = (msg: string) => {
     setMessage(msg);
@@ -187,7 +174,7 @@ export function BookingTable() {
 
       <div className={classes.gridRoot}>
         <Grid container spacing={3}>
-          <Grid item xs={5}>
+          <Grid item xs={12}>
             {isLoading ? (
               <Progress />
             ) : (
@@ -196,8 +183,12 @@ export function BookingTable() {
                   <TableHead className={classes.head}>
                     <TableRow>
                       <TableCell>#ID</TableCell>
-                      <TableCell>Blood Name</TableCell>
-                      <TableCell>Amount</TableCell>
+                      <TableCell>Full Name</TableCell>
+                      <TableCell>Blood Type</TableCell>
+                      <TableCell>Gender</TableCell>
+                      <TableCell>Contact</TableCell>
+                      <TableCell>City</TableCell>
+                      <TableCell>Appointment</TableCell>
                       {admin && (
                         <TableCell align="center">Actions</TableCell>
                       )}{" "}
@@ -210,9 +201,13 @@ export function BookingTable() {
                           <TableCell component="th" scope="row">
                             {book.bookingId}
                           </TableCell>
-                          <TableCell>{book.bloodtypes.bloodname}</TableCell>
-                          <TableCell>{book.amount}</TableCell>
+                          <TableCell>{`${book.firstname} ${book.secondname} ${book.lastname}`}</TableCell>
 
+                          <TableCell>{book.bloodtypes.bloodname}</TableCell>
+                          <TableCell>{book.gender}</TableCell>
+                          <TableCell>{book.contact}</TableCell>
+                          <TableCell>{book.city}</TableCell>
+                          <TableCell>{book.appointment}</TableCell>
                           {admin && (
                             <TableCell style={{ display: "flex" }}>
                               <DeletePopUp
@@ -238,16 +233,7 @@ export function BookingTable() {
               />
             ) : null}
           </Grid>
-          <Grid item xs={7}>
-            {admin && (
-              <Paper elevation={0} variant="outlined" className={classes.paper}>
-                <h3>book Form</h3>
-                <BookingForm
-                  onSubmit={handleSubmit}
-                />
-              </Paper>
-            )}
-          </Grid>
+        
         </Grid>
       </div>
     </Fragment>

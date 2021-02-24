@@ -141,7 +141,7 @@ export default function Cards(props: Props) {
           </Grid>
           <Grid item xs={4}>
             <Paper className={classes.paper}>
-              <Chip label="Requests" className={classes.primary} />
+              <Chip label="Donations" className={classes.primary} />
               <div className={classes.root}>
                 <div className={classes.section1}>
                   <Grid container alignItems="center">
